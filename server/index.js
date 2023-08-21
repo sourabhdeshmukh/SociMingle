@@ -1,14 +1,14 @@
-import express from "express";
-import bodyParser from "body-parser";
-import mongoose from "mongoose";
-import cors from "cors";
-import dotenv from "dotenv";
-import multer from "multer";
-import helmet from "helmet";
-import morgan from "morgan";
-import path from "path";
-import { fileURLToPath } from "url";
-import { register } from "./controllers/auth.js";
+const express = require("express");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const multer = require("multer");
+const helmet = require("helmet");
+const morgan = require("morgan");
+const path = require("path");
+const { fileURLToPath } = require("url");
+//import { register } from "./controllers/auth.js";
 // import authRoutes from "./routes/auth.js";
 // import userRoutes from "./routes/users.js";
 // import postRoutes from "./routes/posts.js";
@@ -20,8 +20,8 @@ import { register } from "./controllers/auth.js";
 
 // Configurations used by application.
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+//const __filename = fileURLToPath(import.meta.url);
+//const __dirname = path.dirname(__filename);
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -58,7 +58,7 @@ const storage = multer.diskStorage({
 
 
 // Mongoose Setup 
-
+mongoose.set("strictQuery", false);
 const PORT = process.env.PORT || 6001;
 mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
