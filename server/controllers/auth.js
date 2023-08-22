@@ -1,6 +1,6 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const User = require("../modules/User.js");
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import User from "../models/User.js";
 
 // New User Registration
 
@@ -37,6 +37,27 @@ export const register = async (req, res) => {
         res.status(201).json(savedUser);
 
     } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+// Configurations for logging
+
+export const login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({ email: email });
+        if (!user) return res.status(400).json({ msg: "User does not exist. "});
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) return res.status(400).json({ msg: "Invaid credentials"})
+
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+        delete user.password;
+
+        res.status(200).json({token, user});
+        
+    } catch(err) {
         res.status(500).json({ error: err.message });
     }
 };
